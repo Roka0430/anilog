@@ -64,8 +64,7 @@ class AniLog {
     div.innerHTML = [
       `<div class="anime-list__item-title">${anime.title}</div>`,
       `<div class="anime-list__item-meta">`,
-      `<span class="anime-list__item-tag">${anime.series}</span>`,
-      `<span class="anime-list__item-tag">${anime.year}年</span>`,
+      `<span class="anime-list__item-tag">${anime.year}</span>`,
       `<span class="anime-list__item-tag">${anime.season}</span>`,
       `<span class="anime-list__item-tag">${anime.status}</span>`,
       `</div>`,
@@ -76,7 +75,7 @@ class AniLog {
 
   #setupYearFilter() {
     const years = this.animeData.map((anime) => anime.year);
-    const sortedYears = [...new Set(years)].sort((a, b) => a - b);
+    const sortedYears = [...new Set(years)].sort((a, b) => b - a);
     for (const year of sortedYears)
       this.ui.yearFilter.insertAdjacentHTML(
         "beforeend",
@@ -105,6 +104,7 @@ class AniLog {
     this.ui.animeList.textContent = "";
     const visibleItems = this.animeItems.filter((item) => this.#matchFilter(item) && this.#matchSearch(item));
     this.ui.animeList.append(...visibleItems.map((i) => i.dom));
+    this.#updateListInfo(this.animeData.length, visibleItems.length);
   }
 
   #matchFilter(item) {
@@ -118,6 +118,27 @@ class AniLog {
   #matchSearch(item) {
     if (!this.keyword.trim()) return true;
     return item.anime.title.includes(this.keyword);
+  }
+
+  #updateListInfo(total, visible) {
+    if (total == null || visible == null) return;
+
+    if (total === 0) {
+      this.ui.info.textContent = "No anime found";
+      return;
+    }
+
+    if (visible === 0) {
+      this.ui.info.textContent = "No matching anime found";
+      return;
+    }
+
+    if (total === visible) {
+      this.ui.info.textContent = `Showing all ${total} anime`;
+      return;
+    }
+
+    this.ui.info.textContent = `Showing ${visible} of ${total} anime`;
   }
 
   #changeToolbar() {

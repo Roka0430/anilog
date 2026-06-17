@@ -182,6 +182,17 @@ textarea {
   font-weight: bold;
 }
 
+.anime-list__info {
+  padding: 10px 0;
+  border-bottom: solid 1px var(--color-border-primary);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.anime-list__info:empty::before {
+  content: "　";
+}
+
 .anime-list__content {
   display: flex;
   flex-direction: column;
