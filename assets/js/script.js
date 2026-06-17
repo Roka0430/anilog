@@ -1,12 +1,14 @@
 class AniLog {
-  animeData = [];
-  animeItems = [];
-
   constructor() {
+    this.animeData = [];
+    this.animeItems = [];
+
+    this.keyword = "";
+
     this.filters = {
-      status: "all",
-      year: "all",
-      season: "all",
+      status: null,
+      year: null,
+      season: null,
     };
 
     this.sort = {
@@ -70,57 +72,8 @@ class AniLog {
     return div;
   }
 
-  #renderAnimeList() {
-    this.ui.animeList.textContent = "";
-    this.ui.animeList.append(...this.animeItems.map((item) => item.dom));
-  }
-
-  //
-
-  #changeToolbar() {
-    this.ui.toolbar.querySelectorAll("details").forEach((details) => (details.open = false));
-    const formData = Object.fromEntries(new FormData(this.ui.toolbar));
-
-    this.#updateSettings(formData);
-
-    for (const item of this.animeItems) {
-      const visible = this.#matchFilter(item) && this.#matchSearch(item, formData.q);
-      item.dom.classList.toggle("hidden", !visible);
-    }
-
-    this.#sortAnimeList();
-    this.#renderAnimeList();
-  }
-
-  #updateSettings(formData) {
-    for (const key in formData) {
-      if (key in this.filters) this.filters[key] = formData[key];
-      if (key in this.sort) this.sort[key] = formData[key];
-    }
-  }
-
-  #matchFilter(item) {
-    for (const [key, value] of Object.entries(this.filters)) {
-      if (value === "all") continue;
-
-      if (key === "year") {
-        if (item.anime.year !== Number(value)) return false;
-        continue;
-      }
-
-      if (item.anime[key] !== value) return false;
-    }
-
-    return true;
-  }
-
-  #matchSearch(item, keyword) {
-    if (!keyword.trim()) return true;
-    return item.anime.title.includes(keyword);
-  }
-
   #sortAnimeList() {
-    const seasonOrder = { winter: 0, sprint: 1, summer: 2, fall: 3 };
+    const seasonOrder = { winter: 0, spring: 1, summer: 2, fall: 3 };
 
     switch (this.sort.order) {
       case "title":
@@ -133,6 +86,61 @@ class AniLog {
           return keyB - keyA;
         });
         break;
+    }
+  }
+
+  #renderAnimeList() {
+    this.ui.animeList.textContent = "";
+    const visibleItems = this.animeItems.filter((item) => this.#matchFilter(item) && this.#matchSearch(item));
+    this.ui.animeList.append(...visibleItems.map((i) => i.dom));
+  }
+
+  #matchFilter(item) {
+    for (const [key, filter] of Object.entries(this.filters)) {
+      if (filter === null) continue;
+
+      if (key === "year") {
+        if (item.anime.year !== Number(filter)) return false;
+        continue;
+      }
+
+      if (item.anime[key] !== filter) return false;
+    }
+
+    return true;
+  }
+
+  #matchSearch(item) {
+    if (!this.keyword.trim()) return true;
+    return item.anime.title.includes(this.keyword);
+  }
+
+  #changeToolbar() {
+    this.ui.toolbar.querySelectorAll("details").forEach((details) => (details.open = false));
+    const formData = Object.fromEntries(new FormData(this.ui.toolbar));
+
+    this.keyword = formData.q;
+    this.#updateSettings(formData);
+
+    this.#sortAnimeList();
+    this.#renderAnimeList();
+  }
+
+  #updateSettings(formData) {
+    for (const key in formData) {
+      if (key in this.filters) this.filters[key] = this.#castFormData(key, formData[key]);
+      if (key in this.sort) this.sort[key] = this.#castFormData(key, formData[key]);
+    }
+  }
+
+  #castFormData(key, value) {
+    if (value === "all" || value === "" || value === null) return null;
+
+    switch (key) {
+      case "year":
+        return Number(value);
+      default:
+        return value;
     }
   }
 }
