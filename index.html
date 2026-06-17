@@ -12,7 +12,7 @@
 <body>
   <div class="wrapper">
     <section class="anime-list">
-      <form class="anime-list__toolbar">
+      <form class="anime-list__toolbar" data-ui="toolbar">
         <input class="anime-list__search" type="text" name="q" placeholder="Find a anime..." autocomplete="off">
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Status</summary>
@@ -37,7 +37,11 @@
           <div class="anime-list__filter-options">
             <div class="anime-list__filter-title">Select year</div>
             <label>
-              <input class="anime-list__filter-option" type="radio" name="year" value="2025" checked>
+              <input class="anime-list__filter-option" type="radio" name="year" value="all" checked>
+              All
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="year" value="2025">
               2025
             </label>
             <label>
@@ -59,7 +63,11 @@
           <div class="anime-list__filter-options">
             <div class="anime-list__filter-title">Select season</div>
             <label>
-              <input class="anime-list__filter-option" type="radio" name="season" value="winter" checked>
+              <input class="anime-list__filter-option" type="radio" name="season" value="all" checked>
+              All
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="season" value="winter">
               Winter
             </label>
             <label>
@@ -81,43 +89,18 @@
           <div class="anime-list__filter-options">
             <div class="anime-list__filter-title">Select order</div>
             <label>
-              <input class="anime-list__filter-option" type="radio" name="sort" value="season" checked>
-              Season
+              <input class="anime-list__filter-option" type="radio" name="order" value="broadcast" checked>
+              Broadcast
             </label>
             <label>
-              <input class="anime-list__filter-option" type="radio" name="sort" value="title">
+              <input class="anime-list__filter-option" type="radio" name="order" value="title">
               Title
             </label>
           </div>
         </details>
-        <button class="anime-list__new-button">New</button>
+        <button class="anime-list__new-button" type="button">New</button>
       </form>
-      <div class="anime-list__content" data-ui="animeList">
-        <div class="anime-list__item">
-          <div class="anime-list__item-title">アニメタイトル</div>
-          <div class="anime-list__item-meta">
-            <span class="anime-list__item-tag">タグ1</span>
-            <span class="anime-list__item-tag">タグ2</span>
-            <span class="anime-list__item-tag">タグ3</span>
-          </div>
-        </div>
-        <div class="anime-list__item">
-          <div class="anime-list__item-title">アニメタイトル</div>
-          <div class="anime-list__item-meta">
-            <span class="anime-list__item-tag">タグ1</span>
-            <span class="anime-list__item-tag">タグ2</span>
-            <span class="anime-list__item-tag">タグ3</span>
-          </div>
-        </div>
-        <div class="anime-list__item">
-          <div class="anime-list__item-title">アニメタイトル</div>
-          <div class="anime-list__item-meta">
-            <span class="anime-list__item-tag">タグ1</span>
-            <span class="anime-list__item-tag">タグ2</span>
-            <span class="anime-list__item-tag">タグ3</span>
-          </div>
-        </div>
-      </div>
+      <div class="anime-list__content" data-ui="animeList"></div>
     </section>
   </div>
   <script src="assets/js/script.js" defer></script>

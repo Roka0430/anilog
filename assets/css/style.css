@@ -192,6 +192,10 @@ textarea {
   border-bottom: solid 1px var(--color-border-primary);
 }
 
+.anime-list__item.hidden {
+  display: none;
+}
+
 .anime-list__item-title {
   color: var(--color-accent-primary);
   font-size: 18px;

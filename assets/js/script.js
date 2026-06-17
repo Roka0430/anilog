@@ -2,12 +2,26 @@ class AniLog {
   animeData = [];
   animeItems = [];
 
+  constructor() {
+    this.filters = {
+      status: "all",
+      year: "all",
+      season: "all",
+    };
+
+    this.sort = {
+      order: "broadcast",
+    };
+  }
+
   async init() {
     this.ui = this.#getUi();
+    this.#bindEvent();
 
     this.animeData = await this.#loadAnimeData();
     this.animeItems = this.#generateAnimeItems();
 
+    this.#sortAnimeList();
     this.#renderAnimeList();
   }
 
@@ -17,8 +31,13 @@ class AniLog {
     return ui;
   }
 
+  #bindEvent() {
+    this.ui.toolbar.addEventListener("submit", (e) => e.preventDefault());
+    this.ui.toolbar.addEventListener("change", () => this.#changeToolbar());
+  }
+
   async #loadAnimeData() {
-    const res = await fetch("assets/data/data.json");
+    const res = await fetch(`assets/data/data.json?t=${Date.now()}`);
     const text = await res.text();
     return text ? JSON.parse(text) : [];
   }
@@ -44,6 +63,7 @@ class AniLog {
       `<span class="anime-list__item-tag">${anime.series}</span>`,
       `<span class="anime-list__item-tag">${anime.year}年</span>`,
       `<span class="anime-list__item-tag">${anime.season}</span>`,
+      `<span class="anime-list__item-tag">${anime.status}</span>`,
       `</div>`,
     ].join("");
 
@@ -53,6 +73,52 @@ class AniLog {
   #renderAnimeList() {
     this.ui.animeList.textContent = "";
     this.ui.animeList.append(...this.animeItems.map((item) => item.dom));
+  }
+
+  //
+
+  #changeToolbar() {
+    this.ui.toolbar.querySelectorAll("details").forEach((details) => (details.open = false));
+    const formData = Object.fromEntries(new FormData(this.ui.toolbar));
+
+    this.#updateSettings(formData);
+    this.#filterAnimeList();
+    this.#sortAnimeList();
+    this.#renderAnimeList();
+  }
+
+  #updateSettings(formData) {
+    for (const key in formData) {
+      if (key in this.filters) this.filters[key] = formData[key];
+      if (key in this.sort) this.sort[key] = formData[key];
+    }
+  }
+
+  #filterAnimeList() {
+    for (const item of this.animeItems) {
+      item.dom.classList.remove("hidden");
+      for (const [key, value] of Object.entries(this.filters)) {
+        if (value === "all") continue;
+        if (item.anime[key] !== value) item.dom.classList.add("hidden");
+      }
+    }
+  }
+
+  #sortAnimeList() {
+    const seasonOrder = { winter: 0, sprint: 1, summer: 2, fall: 3 };
+
+    switch (this.sort.order) {
+      case "title":
+        this.animeItems.sort((a, b) => a.anime.title.localeCompare(b.anime.title));
+        break;
+      case "broadcast":
+        this.animeItems.sort((a, b) => {
+          const keyA = a.anime.year * 10 + seasonOrder[a.anime.season];
+          const keyB = b.anime.year * 10 + seasonOrder[b.anime.season];
+          return keyB - keyA;
+        });
+        break;
+    }
   }
 }
 
