@@ -228,4 +228,5 @@ textarea {
   padding: 0 8px 1px 8px;
   border: solid 1px var(--color-border-primary);
   border-radius: 12px;
+  cursor: pointer;
 }
