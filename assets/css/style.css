@@ -86,7 +86,13 @@ textarea {
   background: var(--color-bg-secondary);
   border: solid 1px var(--color-border-primary);
   border-radius: 4px;
+  outline: solid 1px transparent;
   cursor: pointer;
+  transition: all 0.1s;
+}
+
+.anime-list__filter-summary:not(:has(+ .anime-list__filter-options label:first-of-type input:checked)) {
+  outline: solid 1px var(--color-accent-primary);
 }
 
 .anime-list__filter-summary::after {
@@ -155,7 +161,6 @@ textarea {
   margin: 0 10px 0 0;
   border-bottom: solid 1px transparent;
   border-left: solid 1px transparent;
-  transition: all 0.1s;
 }
 
 .anime-list__filter-options label:has(input:checked)::before {
