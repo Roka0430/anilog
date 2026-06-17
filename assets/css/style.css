@@ -1,0 +1,27 @@
+:root {
+  --color-bg-primary: #f8fafc;
+  --color-bg-secondary: #eaf2f7;
+  --color-bg-invert: var(--color-text-primary);
+
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #64748b;
+  --color-text-invert: var(--color-bg-primary);
+
+  --color-border-primary: #cbd5e1;
+  --color-border-secondary: #e2e8f0;
+
+  --color-accent-primary: #0ea5e9;
+  --color-accent-secondary: #10b981;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  user-select: none;
+}
