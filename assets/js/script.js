@@ -23,6 +23,8 @@ class AniLog {
     this.animeData = await this.#loadAnimeData();
     this.animeItems = this.#generateAnimeItems();
 
+    this.#setupYearFilter();
+
     this.#sortAnimeList();
     this.#renderAnimeList();
   }
@@ -72,6 +74,16 @@ class AniLog {
     return div;
   }
 
+  #setupYearFilter() {
+    const years = this.animeData.map((anime) => anime.year);
+    const sortedYears = [...new Set(years)].sort((a, b) => a - b);
+    for (const year of sortedYears)
+      this.ui.yearFilter.insertAdjacentHTML(
+        "beforeend",
+        `<label><input class="anime-list__filter-option" type="radio" name="year" value="${year}">${year}</label>`,
+      );
+  }
+
   #sortAnimeList() {
     const seasonOrder = { winter: 0, spring: 1, summer: 2, fall: 3 };
 
@@ -98,15 +110,8 @@ class AniLog {
   #matchFilter(item) {
     for (const [key, filter] of Object.entries(this.filters)) {
       if (filter === null) continue;
-
-      if (key === "year") {
-        if (item.anime.year !== Number(filter)) return false;
-        continue;
-      }
-
       if (item.anime[key] !== filter) return false;
     }
-
     return true;
   }
 
