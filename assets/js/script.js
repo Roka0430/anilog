@@ -61,12 +61,14 @@ class AniLog {
     const div = document.createElement("div");
     div.className = "anime-list__item";
 
+    const proper = (text) => text[0].toUpperCase() + text.slice(1);
+
     div.innerHTML = [
       `<div class="anime-list__item-title">${anime.title}</div>`,
       `<div class="anime-list__item-meta">`,
       `<span class="anime-list__item-tag">${anime.year}</span>`,
-      `<span class="anime-list__item-tag">${anime.season}</span>`,
-      `<span class="anime-list__item-tag">${anime.status}</span>`,
+      `<span class="anime-list__item-tag">${proper(anime.season)}</span>`,
+      `<span class="anime-list__item-tag">${proper(anime.status)}</span>`,
       `</div>`,
     ].join("");
 
