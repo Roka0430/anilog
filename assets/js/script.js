@@ -82,7 +82,12 @@ class AniLog {
     const formData = Object.fromEntries(new FormData(this.ui.toolbar));
 
     this.#updateSettings(formData);
-    this.#filterAnimeList();
+
+    for (const item of this.animeItems) {
+      const visible = this.#matchFilter(item) && this.#matchSearch(item, formData.q);
+      item.dom.classList.toggle("hidden", !visible);
+    }
+
     this.#sortAnimeList();
     this.#renderAnimeList();
   }
@@ -94,14 +99,24 @@ class AniLog {
     }
   }
 
-  #filterAnimeList() {
-    for (const item of this.animeItems) {
-      item.dom.classList.remove("hidden");
-      for (const [key, value] of Object.entries(this.filters)) {
-        if (value === "all") continue;
-        if (item.anime[key] !== value) item.dom.classList.add("hidden");
+  #matchFilter(item) {
+    for (const [key, value] of Object.entries(this.filters)) {
+      if (value === "all") continue;
+
+      if (key === "year") {
+        if (item.anime.year !== Number(value)) return false;
+        continue;
       }
+
+      if (item.anime[key] !== value) return false;
     }
+
+    return true;
+  }
+
+  #matchSearch(item, keyword) {
+    if (!keyword.trim()) return true;
+    return item.anime.title.includes(keyword);
   }
 
   #sortAnimeList() {
