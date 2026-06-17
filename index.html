@@ -13,66 +13,74 @@
   <div class="wrapper">
     <section class="anime-list">
       <form class="anime-list__toolbar">
-        <input class="anime-list__search" type="text" name="q" placeholder="Find a anime...">
+        <input class="anime-list__search" type="text" name="q" placeholder="Find a anime..." autocomplete="off">
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Status</summary>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
-            All
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="watching">
-            Watching
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="completed">
-            Completed
-          </label>
+          <div class="anime-list__filter-options">
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
+              All
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="watching">
+              Watching
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="completed">
+              Completed
+            </label>
+          </div>
         </details>
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Year</summary>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
-            2025
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="watching">
-            2025
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="completed">
-            2025
-          </label>
+          <div class="anime-list__filter-options">
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
+              2025
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="watching">
+              2025
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="completed">
+              2025
+            </label>
+          </div>
         </details>
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Season</summary>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
-            Winter
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all">
-            Spring
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="watching">
-            Summer
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="completed">
-            Fall
-          </label>
+          <div class="anime-list__filter-options">
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
+              Winter
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all">
+              Spring
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="watching">
+              Summer
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="completed">
+              Fall
+            </label>
+          </div>
         </details>
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Sort</summary>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
-            Season
-          </label>
-          <label>
-            <input class="anime-list__filter-option" type="radio" name="status" value="all">
-            Title
-          </label>
+          <div class="anime-list__filter-options">
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all" checked>
+              Season
+            </label>
+            <label>
+              <input class="anime-list__filter-option" type="radio" name="status" value="all">
+              Title
+            </label>
+          </div>
         </details>
         <button class="anime-list__new-button">New</button>
       </form>
