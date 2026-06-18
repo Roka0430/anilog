@@ -13,7 +13,7 @@
   <div class="wrapper">
     <section class="anime-list">
       <form class="anime-list__toolbar" data-ui="toolbar">
-        <input class="anime-list__search" type="text" name="q" placeholder="Find a anime..." autocomplete="off">
+        <input class="anime-list__search" type="text" name="q" placeholder="Find a anime..." autocomplete="off" data-ui="searchInput">
         <details class="anime-list__filter">
           <summary class="anime-list__filter-summary">Status</summary>
           <div class="anime-list__filter-options">
@@ -84,7 +84,10 @@
         </details>
         <button class="anime-list__new-button" type="button">New</button>
       </form>
-      <div class="anime-list__info" data-ui="info"></div>
+      <div class="anime-list__info">
+        <div class="anime-list__info-content" data-ui="infoContent"></div>
+        <button class="anime-list__clear-filter-button hidden" data-ui="clearFilterButton">Clear filter</button>
+      </div>
       <div class="anime-list__content" data-ui="animeList"></div>
     </section>
   </div>

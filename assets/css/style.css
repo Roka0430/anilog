@@ -183,6 +183,8 @@ textarea {
 }
 
 .anime-list__info {
+  display: flex;
+  justify-content: space-between;
   padding: 10px 0;
   border-bottom: solid 1px var(--color-border-primary);
   color: var(--color-text-secondary);
@@ -191,6 +193,32 @@ textarea {
 
 .anime-list__info:empty::before {
   content: "　";
+}
+
+.anime-list__clear-filter-button {
+  padding: 0 8px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.anime-list__clear-filter-button:hover {
+  color: var(--color-accent-primary);
+}
+
+.anime-list__clear-filter-button.hidden {
+  display: none;
+}
+
+.anime-list__clear-filter-button::before {
+  content: "×";
+  position: relative;
+  top: 1px;
+  margin: 0 3px 0 0;
+  font-size: 18px;
 }
 
 .anime-list__content {

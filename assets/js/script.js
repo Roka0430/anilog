@@ -39,6 +39,7 @@ class AniLog {
     this.ui.toolbar.addEventListener("submit", (e) => e.preventDefault());
     this.ui.toolbar.addEventListener("change", () => this.#onchangeToolbar());
     this.ui.animeList.addEventListener("click", (e) => this.#onclickAnimeList(e));
+    this.ui.clearFilterButton.addEventListener("click", () => this.#clearFilter());
   }
 
   async #loadAnimeData() {
@@ -128,20 +129,24 @@ class AniLog {
 
     if (total === 0) {
       this.ui.infoContent.textContent = "No anime found";
+      this.ui.clearFilterButton.classList.add("hidden");
       return;
     }
 
     if (visible === 0) {
       this.ui.infoContent.textContent = "No matching anime found";
+      this.ui.clearFilterButton.classList.remove("hidden");
       return;
     }
 
     if (total === visible) {
       this.ui.infoContent.textContent = `Showing all ${total} anime`;
+      this.ui.clearFilterButton.classList.add("hidden");
       return;
     }
 
     this.ui.infoContent.textContent = `Showing ${visible} of ${total} anime`;
+    this.ui.clearFilterButton.classList.remove("hidden");
   }
 
   #onchangeToolbar() {
@@ -184,6 +189,18 @@ class AniLog {
     if (!radio) return;
 
     radio.checked = true;
+    this.#onchangeToolbar();
+  }
+
+  #clearFilter() {
+    this.ui.searchInput.value = "";
+
+    const options = this.ui.toolbar.querySelectorAll(".anime-list__filter-options");
+    for (const option of options) {
+      const radio = option.querySelectorAll('input[type="radio"]')[0];
+      radio.checked = true;
+    }
+
     this.#onchangeToolbar();
   }
 }
