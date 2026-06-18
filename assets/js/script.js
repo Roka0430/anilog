@@ -37,7 +37,8 @@ class AniLog {
 
   #bindEvent() {
     this.ui.toolbar.addEventListener("submit", (e) => e.preventDefault());
-    this.ui.toolbar.addEventListener("change", () => this.#changeToolbar());
+    this.ui.toolbar.addEventListener("change", () => this.#onchangeToolbar());
+    this.ui.animeList.addEventListener("click", (e) => this.#onclickAnimeList(e));
   }
 
   async #loadAnimeData() {
@@ -66,9 +67,9 @@ class AniLog {
     div.innerHTML = [
       `<div class="anime-list__item-title">${anime.title}</div>`,
       `<div class="anime-list__item-meta">`,
-      `<span class="anime-list__item-tag">${anime.year}</span>`,
-      `<span class="anime-list__item-tag">${proper(anime.season)}</span>`,
-      `<span class="anime-list__item-tag">${proper(anime.status)}</span>`,
+      `<span class="anime-list__item-tag" data-tag="year" data-value="${anime.year}">${anime.year}</span>`,
+      `<span class="anime-list__item-tag" data-tag="season" data-value="${anime.season}">${proper(anime.season)}</span>`,
+      `<span class="anime-list__item-tag" data-tag="status" data-value="${anime.status}">${proper(anime.status)}</span>`,
       `</div>`,
     ].join("");
 
@@ -126,24 +127,24 @@ class AniLog {
     if (total == null || visible == null) return;
 
     if (total === 0) {
-      this.ui.info.textContent = "No anime found";
+      this.ui.infoContent.textContent = "No anime found";
       return;
     }
 
     if (visible === 0) {
-      this.ui.info.textContent = "No matching anime found";
+      this.ui.infoContent.textContent = "No matching anime found";
       return;
     }
 
     if (total === visible) {
-      this.ui.info.textContent = `Showing all ${total} anime`;
+      this.ui.infoContent.textContent = `Showing all ${total} anime`;
       return;
     }
 
-    this.ui.info.textContent = `Showing ${visible} of ${total} anime`;
+    this.ui.infoContent.textContent = `Showing ${visible} of ${total} anime`;
   }
 
-  #changeToolbar() {
+  #onchangeToolbar() {
     this.ui.toolbar.querySelectorAll("details").forEach((details) => (details.open = false));
     const formData = Object.fromEntries(new FormData(this.ui.toolbar));
 
@@ -156,12 +157,12 @@ class AniLog {
 
   #updateSettings(formData) {
     for (const key in formData) {
-      if (key in this.filters) this.filters[key] = this.#castFormData(key, formData[key]);
-      if (key in this.sort) this.sort[key] = this.#castFormData(key, formData[key]);
+      if (key in this.filters) this.filters[key] = this.#castKeyValue(key, formData[key]);
+      if (key in this.sort) this.sort[key] = this.#castKeyValue(key, formData[key]);
     }
   }
 
-  #castFormData(key, value) {
+  #castKeyValue(key, value) {
     if (value === "all" || value === "" || value === null) return null;
 
     switch (key) {
@@ -170,6 +171,20 @@ class AniLog {
       default:
         return value;
     }
+  }
+
+  #onclickAnimeList(e) {
+    const target = e.target;
+    if (!target.classList.contains("anime-list__item-tag")) return;
+
+    const tag = target.dataset.tag;
+    const value = this.#castKeyValue(tag, target.dataset.value);
+
+    const radio = this.ui.toolbar.querySelector(`input[type="radio"][name="${tag}"][value="${value}"]`);
+    if (!radio) return;
+
+    radio.checked = true;
+    this.#onchangeToolbar();
   }
 }
 
